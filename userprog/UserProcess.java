@@ -371,8 +371,8 @@ public class UserProcess {
                 if (this.descriptorTable[i] == null){
                     //System.out.println("Entered if 3");
                     this.descriptorTable[i] = ThreadedKernel.fileSystem.open(currFile, false);
-                    //System.out.println(i);
-                    //System.out.println(this.descriptorTable[i].getName());
+                    System.out.println("The following file was opened: "+this.descriptorTable[i].getName()+ " in position " + i);
+                    
                     return i;
             }
         }
@@ -420,7 +420,7 @@ public class UserProcess {
 
 	private int handleRead(int fileDescriptor, int buff, int buffsize){
 
-    	if (fileDescriptor < 0 || fileDescriptor> 16 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
+    	if (fileDescriptor < 0 || fileDescriptor > 15 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
     		return -1;
 		}
 
@@ -440,7 +440,7 @@ public class UserProcess {
 
 	private int handleWrite(int fileDescriptor, int buff, int buffsize){
 
-		if (fileDescriptor < 0 || fileDescriptor> 16 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
+		if (fileDescriptor < 0 || fileDescriptor > 15 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
 			return -1;
 		}
 
@@ -455,6 +455,30 @@ public class UserProcess {
 
 		return File.write(bufferbyte,0,BRead);
 	}
+
+    private int handleClose(int fileDescriptor){
+        
+
+
+        if(fileDescriptor < 0 || fileDescriptor > 15 || this.descriptorTable[fileDescriptor] == null){
+            return -1;
+        }
+
+        System.out.println("The following file will be closed: " + this.descriptorTable[fileDescriptor].getName() 
+        + " it's in position:"+fileDescriptor);
+        OpenFile File = this.descriptorTable[fileDescriptor];
+        
+        File.close();
+        this.descriptorTable[fileDescriptor] = null;
+
+        
+        System.out.println("The position of the file that was closed is: "+fileDescriptor);
+        if (this.descriptorTable[fileDescriptor] == null) {
+            System.out.println("The value in that position is now null");
+        }
+
+        return 0;
+    }
 
 
 
@@ -509,7 +533,9 @@ public class UserProcess {
 	case syscallRead:
 		return handleRead(a0,a1,a2);
 	case syscallWrite:
-			return handleWrite(a0,a1,a2);
+		return handleWrite(a0,a1,a2);
+    case syscallClose:
+        return handleClose(a0);
 
 	default:
 	    Lib.debug(dbgProcess, "Unknown syscall " + syscall);
