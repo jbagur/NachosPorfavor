@@ -16,8 +16,12 @@ int
 main()
 {
     char *test = "Test1.txt";
-    creat(test);
-    creat(test);
+    char *crear2 = "Creacion.txt";
+    char *escribir = "Bendiciones";
+    void *buffer[1];
+    int read1 = open(test);
+    int read2 = read(read1,buffer,11);
+    printf("Contenido: %s\n",buffer);
     halt();
     /* not reached */
 }

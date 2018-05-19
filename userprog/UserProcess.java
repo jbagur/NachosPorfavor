@@ -353,7 +353,7 @@ public class UserProcess {
 
     private int handleOpen(int address){
 
-        
+        //System.out.println("Function Handle Open")
         String currFile = readVirtualMemoryString(address, 256);
         //System.out.println(currFile);
 
@@ -371,14 +371,14 @@ public class UserProcess {
                 if (this.descriptorTable[i] == null){
                     //System.out.println("Entered if 3");
                     this.descriptorTable[i] = ThreadedKernel.fileSystem.open(currFile, false);
-                    System.out.println(i);
-                    System.out.println(this.descriptorTable[i].getName());
+                    //System.out.println(i);
+                    //System.out.println(this.descriptorTable[i].getName());
                     return i;
             }
         }
 
         }
-        /*System.out.println("Function Handle Open");
+        /*
 	    System.out.println("Memory Address: " + address);
 	    System.out.println();*/
 	    return -1;
@@ -386,7 +386,9 @@ public class UserProcess {
 
 
 	private int handleCreate(int address){
-		String currFile = readVirtualMemoryString(address, 256);
+
+    	//System.out.println("Function Handle Open")
+    	String currFile = readVirtualMemoryString(address, 256);
 		//System.out.println(currFile);
 
 		if(currFile == null || this.descriptorTable.length == 0){
@@ -416,7 +418,47 @@ public class UserProcess {
 	}
 
 
-    private static final int
+	private int handleRead(int fileDescriptor, int buff, int buffsize){
+
+    	if (fileDescriptor < 0 || fileDescriptor> 16 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
+    		return -1;
+		}
+
+		OpenFile File = this.descriptorTable[fileDescriptor];
+
+		byte[] bufferbyte = new byte[buffsize];
+		int IRead = File.read(bufferbyte,0,buffsize);
+		int BRead = writeVirtualMemory(buff, bufferbyte,0,IRead);
+
+		if (IRead!=BRead){
+			return -1;
+		}
+		//System.out.println(IRead);
+		return IRead;
+	}
+
+
+	private int handleWrite(int fileDescriptor, int buff, int buffsize){
+
+		if (fileDescriptor < 0 || fileDescriptor> 16 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
+			return -1;
+		}
+
+		OpenFile File = this.descriptorTable[fileDescriptor];
+
+		byte[] bufferbyte = new byte[buffsize];
+		int BRead = readVirtualMemory(buff, bufferbyte);
+
+		if (buffsize!=BRead){
+			return -1;
+		}
+
+		return File.write(bufferbyte,0,BRead);
+	}
+
+
+
+	private static final int
         syscallHalt = 0,
       	syscallExit = 1,
       	syscallExec = 2,
@@ -464,6 +506,10 @@ public class UserProcess {
 	    return handleOpen(a0);
 	case syscallCreate:
 		return handleCreate(a0);
+	case syscallRead:
+		return handleRead(a0,a1,a2);
+	case syscallWrite:
+			return handleWrite(a0,a1,a2);
 
 	default:
 	    Lib.debug(dbgProcess, "Unknown syscall " + syscall);
