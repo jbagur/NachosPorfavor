@@ -47,7 +47,7 @@ main()
     int closeFile = close(openFile);
     int openFile3 = open(test3);*/
     
-    ///* //Close 2
+    /* //Close 2
     char *test = "Test1.txt";
     char *escribir = "Wicho, Hit es tu papi";
     void *buffer[1];
@@ -57,7 +57,23 @@ main()
     int read1 = open(test);
     int read2 = read(read1,buffer,strlen(escribir));
     printf("Contenido: %s\n",buffer);
-    
+    */
+
+    /* //Unlink
+    char *test = "Test2.txt";
+    int deleteFile = unlink(test);
+    int openFile = open(test);
+    if(openFile == -1){
+    printf("No se encontro");}
+    */
+
+    ///* //Unlink2
+    char *create = "Test4.txt";
+    int createFile = creat(create);
+    int deleteFile = unlink(create);
+    int openFile = open(create);
+    if(openFile == -1){
+    printf("No se encontro archivo deseado\n");}
     //*/
     
     halt();

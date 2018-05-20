@@ -350,48 +350,50 @@ public class UserProcess {
     }
 
 
+	private int handleOpen(int address){
 
-    private int handleOpen(int address){
+		//System.out.println("Function Handle Open")
+		String currFile = readVirtualMemoryString(address, 256);
+		//System.out.println(currFile);
 
-        //System.out.println("Function Handle Open")
-        String currFile = readVirtualMemoryString(address, 256);
-        //System.out.println(currFile);
-
-        if(currFile == null || this.descriptorTable.length == 0){
-            //System.out.println("Entered if 1");
-            return -1;
-        }
-        if(ThreadedKernel.fileSystem.open(currFile, false) != null){
-            //System.out.println("Enter if 2");
-            for (int i = 0; i < this.descriptorTable.length; i++){
+		if(currFile == null || currFile.length() <= 0){
+			//System.out.println("Entered if 1");
+			return -1;
+		}
+		if(ThreadedKernel.fileSystem.open(currFile, false) != null){
+			//System.out.println("Enter if 2");
+			for (int i = 0; i < this.descriptorTable.length; i++){
 				if(this.descriptorTable[i] != null && this.descriptorTable[i].getName().equals(currFile)){
 					System.out.println("Ya esta abierto");
 					return i;
 				}
-                if (this.descriptorTable[i] == null){
-                    //System.out.println("Entered if 3");
-                    this.descriptorTable[i] = ThreadedKernel.fileSystem.open(currFile, false);
-                    System.out.println("The following file was opened: "+this.descriptorTable[i].getName()+ " in position " + i);
-                    
-                    return i;
-            }
-        }
 
-        }
-        /*
-	    System.out.println("Memory Address: " + address);
-	    System.out.println();*/
-	    return -1;
-    }
+			}
+
+			for (int i = 0; i < this.descriptorTable.length; i++) {
+				if (this.descriptorTable[i] == null){
+					//System.out.println("Entered if 3");
+					this.descriptorTable[i] = ThreadedKernel.fileSystem.open(currFile, false);
+					System.out.println("The following file was opened: "+this.descriptorTable[i].getName()+ " in position " + i);
+
+					return i;
+				}
+			}
+
+		}
+
+    	System.out.println("No se encontro el archivo");
+    	return -1;
+	}
 
 
 	private int handleCreate(int address){
 
-    	//System.out.println("Function Handle Open")
-    	String currFile = readVirtualMemoryString(address, 256);
-		//System.out.println(currFile);
 
-		if(currFile == null || this.descriptorTable.length == 0){
+		String currFile = readVirtualMemoryString(address, 256);
+
+
+		if(currFile == null || currFile.length() == 0){
 			//System.out.println("Entered if 1");
 			return -1;
 		}
@@ -401,64 +403,80 @@ public class UserProcess {
 				if(this.descriptorTable[i] != null && this.descriptorTable[i].getName().equals(currFile)){
 					return i;
 				}
+
+			}
+
+			for (int i = 0; i < this.descriptorTable.length; i++ ) {
 				if (this.descriptorTable[i] == null){
 					//System.out.println("Entered if 3");
 					this.descriptorTable[i] = ThreadedKernel.fileSystem.open(currFile, true);
-					System.out.println(i);
+					System.out.println("Archivo creado en la poscicion: "+i);
 					System.out.println(this.descriptorTable[i].getName() + " created successfully!");
 					return i;
 				}
+
 			}
 
 		}
-
-
 
 		return -1;
 	}
 
 
+	private boolean validate(int fileDescriptor, int buffsize){
+		if (fileDescriptor < 0 || fileDescriptor > 15 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
+			return false;
+		} else{
+			return true;
+		}
+	}
+
+
+
 	private int handleRead(int fileDescriptor, int buff, int buffsize){
 
-    	if (fileDescriptor < 0 || fileDescriptor > 15 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
-    		return -1;
+
+		if (validate(fileDescriptor, buffsize)){
+
+			OpenFile File = this.descriptorTable[fileDescriptor];
+
+			byte[] bufferbyte = new byte[buffsize];
+			int IRead = File.read(bufferbyte,0,buffsize);
+			int BRead = writeVirtualMemory(buff, bufferbyte,0,IRead);
+
+			if (IRead!=BRead){
+				return -1;
+			}
+			//System.out.println(IRead);
+			return IRead;
+
 		}
 
-		OpenFile File = this.descriptorTable[fileDescriptor];
-
-		byte[] bufferbyte = new byte[buffsize];
-		int IRead = File.read(bufferbyte,0,buffsize);
-		int BRead = writeVirtualMemory(buff, bufferbyte,0,IRead);
-
-		if (IRead!=BRead){
-			return -1;
-		}
-		//System.out.println(IRead);
-		return IRead;
+		return -1;
 	}
+
 
 
 	private int handleWrite(int fileDescriptor, int buff, int buffsize){
 
-		if (fileDescriptor < 0 || fileDescriptor > 15 || buffsize < 0 || this.descriptorTable[fileDescriptor]== null){
-			return -1;
+
+		if (validate(fileDescriptor, buffsize)) {
+			OpenFile File = this.descriptorTable[fileDescriptor];
+
+			byte[] bufferbyte = new byte[buffsize];
+			int BRead = readVirtualMemory(buff, bufferbyte);
+
+			if (buffsize!=BRead){
+				return -1;
+			}
+
+			return File.write(bufferbyte,0,BRead);
 		}
 
-		OpenFile File = this.descriptorTable[fileDescriptor];
-
-		byte[] bufferbyte = new byte[buffsize];
-		int BRead = readVirtualMemory(buff, bufferbyte);
-
-		if (buffsize!=BRead){
-			return -1;
-		}
-
-		return File.write(bufferbyte,0,BRead);
+		return -1;
 	}
 
     private int handleClose(int fileDescriptor){
-        
-
 
         if(fileDescriptor < 0 || fileDescriptor > 15 || this.descriptorTable[fileDescriptor] == null){
             return -1;
@@ -471,7 +489,6 @@ public class UserProcess {
         File.close();
         this.descriptorTable[fileDescriptor] = null;
 
-        
         System.out.println("The position of the file that was closed is: "+fileDescriptor);
         if (this.descriptorTable[fileDescriptor] == null) {
             System.out.println("The value in that position is now null");
@@ -480,7 +497,27 @@ public class UserProcess {
         return 0;
     }
 
+	private int handleUnlink(int address){
 
+		String currFile = readVirtualMemoryString(address, 256);
+		if(currFile == null || currFile.length() <= 0){
+			//System.out.println("Entered if 1");
+			return -1;
+		}
+		if(ThreadedKernel.fileSystem.open(currFile, false) != null){
+			for (int i=0; i < this.descriptorTable.length; i++) {
+				if ((this.descriptorTable[i]!= null) && (this.descriptorTable[i].getName().equals(currFile))) {
+					this.descriptorTable[i] = null;
+					System.out.println("Poscicion eliminada: "+i);
+					break;
+				}
+			}
+			if (ThreadedKernel.fileSystem.remove(currFile)) {
+				return 0;
+			}
+		}
+		return -1;
+	}
 
 	private static final int
         syscallHalt = 0,
@@ -536,6 +573,8 @@ public class UserProcess {
 		return handleWrite(a0,a1,a2);
     case syscallClose:
         return handleClose(a0);
+    case syscallUnlink:
+			return handleUnlink(a0);
 
 	default:
 	    Lib.debug(dbgProcess, "Unknown syscall " + syscall);
