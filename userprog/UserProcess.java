@@ -201,13 +201,13 @@ public class UserProcess {
 	 */
 	private boolean load(String name, String[] args) {
 		Lib.debug(dbgProcess, "UserProcess.load(\"" + name + "\")");
-
+//abrir el archivo
 		OpenFile executable = ThreadedKernel.fileSystem.open(name, false);
 		if (executable == null) {
 			Lib.debug(dbgProcess, "\topen failed");
 			return false;
 		}
-
+//Crear el coff
 		try {
 			coff = new Coff(executable);
 		}
@@ -216,7 +216,7 @@ public class UserProcess {
 			Lib.debug(dbgProcess, "\tcoff load failed");
 			return false;
 		}
-
+//Revisar que no esta fragmentado
 		// make sure the sections are contiguous and start at page 0
 		numPages = 0;
 		for (int s=0; s<coff.getNumSections(); s++) {
@@ -244,6 +244,7 @@ public class UserProcess {
 		}
 
 		// program counter initially points at the program entry point
+		//direccion
 		initialPC = coff.getEntryPoint();
 
 		// next comes the stack; stack pointer initially points to top of it
@@ -285,6 +286,7 @@ public class UserProcess {
 	 * @return	<tt>true</tt> if the sections were successfully loaded.
 	 */
 	protected boolean loadSections() {
+//revisar si el numero de paginas no sea  mas grande que el numero de pages of physical memory
 		if (numPages > Machine.processor().getNumPhysPages()) {
 			coff.close();
 			Lib.debug(dbgProcess, "\tinsufficient physical memory");

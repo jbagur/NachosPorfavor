@@ -3,6 +3,7 @@ package nachos.userprog;
 import nachos.machine.*;
 import nachos.threads.*;
 import nachos.userprog.*;
+import java.util.*;
 
 /**
  * A kernel that can support multiple user processes.
@@ -12,7 +13,7 @@ public class UserKernel extends ThreadedKernel {
      * Allocate a new user kernel.
      */
     public UserKernel() {
-	super();
+        super();
     }
 
     /**
@@ -20,20 +21,22 @@ public class UserKernel extends ThreadedKernel {
      * processor's exception handler.
      */
     public void initialize(String[] args) {
-    	super.initialize(args);
+        super.initialize(args);
 
-    	console = new SynchConsole(Machine.console());
-
-    	Machine.processor().setExceptionHandler(new Runnable() {
-    		public void run() { exceptionHandler(); }
-    	    });
+        console = new SynchConsole(Machine.console());
+        AVLP = new Stack();
+        freeTable = new Stack();
+        pageLock =  new Lock();
+        Machine.processor().setExceptionHandler(new Runnable() {
+            public void run() { exceptionHandler(); }
+        });
     }
 
     /**
      * Test the console device.
      */
     public void selfTest() {
-	       super.selfTest();
+        super.selfTest();
 
 	/*
 	System.out.println("Testing the console device. Typed characters");
@@ -56,10 +59,10 @@ public class UserKernel extends ThreadedKernel {
      * @return	the current process, or <tt>null</tt> if no process is current.
      */
     public static UserProcess currentProcess() {
-    	if (!(KThread.currentThread() instanceof UThread))
-    	    return null;
+        if (!(KThread.currentThread() instanceof UThread))
+            return null;
 
-    	return ((UThread) KThread.currentThread()).process;
+        return ((UThread) KThread.currentThread()).process;
     }
 
     /**
@@ -76,11 +79,11 @@ public class UserKernel extends ThreadedKernel {
      * that caused the exception.
      */
     public void exceptionHandler() {
-      	Lib.assertTrue(KThread.currentThread() instanceof UThread);
+        Lib.assertTrue(KThread.currentThread() instanceof UThread);
 
-      	UserProcess process = ((UThread) KThread.currentThread()).process;
-      	int cause = Machine.processor().readRegister(Processor.regCause);
-      	process.handleException(cause);
+        UserProcess process = ((UThread) KThread.currentThread()).process;
+        int cause = Machine.processor().readRegister(Processor.regCause);
+        process.handleException(cause);
     }
 
     /**
@@ -91,21 +94,31 @@ public class UserKernel extends ThreadedKernel {
      * @see	nachos.machine.Machine#getShellProgramName
      */
     public void run() {
-    	super.run();
+        super.run();
 
-    	UserProcess process = UserProcess.newUserProcess();
+        UserProcess process = UserProcess.newUserProcess();
 
-    	String shellProgram = Machine.getShellProgramName();
-    	Lib.assertTrue(process.execute(shellProgram, new String[] { }));
+        String shellProgram = Machine.getShellProgramName();
+        Lib.assertTrue(process.execute(shellProgram, new String[] { }));
 
-    	KThread.currentThread().finish();
+        KThread.currentThread().finish();
+    }
+
+    public static void free(Stack<Integer> AVLP){
+        pageLock.acquire();
+        for (int i = 0;i < AVLP.size(); i++) {
+            int a = AVLP.pop();
+            freeTable.push(a);
+        }
+        pageLock.release();
     }
 
     /**
      * Terminate this kernel. Never returns.
      */
+
     public void terminate() {
-	super.terminate();
+        super.terminate();
     }
 
     /** Globally accessible reference to the synchronized console. */
@@ -113,4 +126,11 @@ public class UserKernel extends ThreadedKernel {
 
     // dummy variables to make javac smarter
     private static Coff dummy1 = null;
+
+//Page table de los procesos
+    public static Stack<Integer> AVLP;
+//no tomados
+    public static Stack<Integer> freeTable;
+
+    public static Lock pageLock;
 }
