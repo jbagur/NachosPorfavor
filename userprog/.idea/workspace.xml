@@ -14,16 +14,20 @@
       <file leaf-file-name="UserProcess.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/UserProcess.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="621">
-              <caret line="434" lean-forward="true" selection-start-line="434" selection-end-line="434" />
+            <state relative-caret-position="594">
+              <caret line="416" column="8" selection-start-line="416" selection-start-column="8" selection-end-line="416" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1293#1294#0" expanded="true" />
+                <element signature="e#1370#1371#0" expanded="true" />
                 <element signature="e#2280#2281#0" expanded="true" />
                 <element signature="e#2332#2333#0" expanded="true" />
                 <element signature="e#3758#3759#0" expanded="true" />
                 <element signature="e#3820#3821#0" expanded="true" />
                 <element signature="e#5433#5434#0" expanded="true" />
                 <element signature="e#5496#5497#0" expanded="true" />
+                <element signature="e#15065#15066#0" expanded="true" />
+                <element signature="e#15080#15081#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -61,10 +65,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1010" />
+    <option name="x" value="101" />
     <option name="y" value="-5" />
     <option name="width" value="910" />
-    <option name="height" value="1085" />
+    <option name="height" value="940" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -160,15 +164,15 @@
       <option name="presentableId" value="Default" />
       <updated>1526664636266</updated>
       <workItem from="1526664644475" duration="20462000" />
-      <workItem from="1526766734524" duration="4603000" />
+      <workItem from="1526766734524" duration="9695000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25065000" />
+    <option name="totallyTimeSpent" value="30157000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="100" y="-5" width="1799" height="919" extended-state="6" />
+    <frame x="101" y="-5" width="1819" height="940" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -184,7 +188,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13133" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.13162299" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -218,12 +222,16 @@
           <caret line="455" column="29" lean-forward="true" selection-start-line="455" selection-start-column="29" selection-end-line="455" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1293#1294#0" expanded="true" />
+            <element signature="e#1370#1371#0" expanded="true" />
             <element signature="e#2280#2281#0" expanded="true" />
             <element signature="e#2332#2333#0" expanded="true" />
             <element signature="e#3758#3759#0" expanded="true" />
             <element signature="e#3820#3821#0" expanded="true" />
             <element signature="e#5433#5434#0" expanded="true" />
             <element signature="e#5496#5497#0" expanded="true" />
+            <element signature="e#15065#15066#0" expanded="true" />
+            <element signature="e#15080#15081#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -244,16 +252,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/UserProcess.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="434" lean-forward="true" selection-start-line="434" selection-end-line="434" />
+        <state relative-caret-position="594">
+          <caret line="416" column="8" selection-start-line="416" selection-start-column="8" selection-end-line="416" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1293#1294#0" expanded="true" />
+            <element signature="e#1370#1371#0" expanded="true" />
             <element signature="e#2280#2281#0" expanded="true" />
             <element signature="e#2332#2333#0" expanded="true" />
             <element signature="e#3758#3759#0" expanded="true" />
             <element signature="e#3820#3821#0" expanded="true" />
             <element signature="e#5433#5434#0" expanded="true" />
             <element signature="e#5496#5497#0" expanded="true" />
+            <element signature="e#15065#15066#0" expanded="true" />
+            <element signature="e#15080#15081#0" expanded="true" />
           </folding>
         </state>
       </provider>
