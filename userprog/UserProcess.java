@@ -134,17 +134,38 @@ public class UserProcess {
 	public int readVirtualMemory(int vaddr, byte[] data, int offset, int length) {
 		Lib.assertTrue(offset >= 0 && length >= 0 && offset+length <= data.length);
 
-//		Procesor procesador = Machine.Processor();
+		//Funciones de machine. processor que usaremos:
+		//pagefromaddress
+		//makeaddress
+		//getmemory
+		//getOffsetfromaddress
 
+		//virtual page number asociada virtual address, offset
 
-		byte[] memory = Machine.processor().getMemory();
+		Processor procesador = Machine.processor();
+		int pageNumber = procesador.pageFromAddress(vaddr);
+		int calcoffset = procesador.offsetFromAddress(vaddr);
+
+		//byte[] memory = Machine.processor().getMemory();
 
 		// for now, just assume that virtual addresses equal physical addresses
-		if (vaddr < 0 || vaddr >= memory.length)
+		if (pageNumber < 0 || pageNumber >= numPages)
 			return 0;
 
-		int amount = Math.min(length, memory.length-vaddr);
-		System.arraycopy(memory, vaddr, data, offset, amount);
+		//int amount = Math.min(length, memory.length-vaddr);
+		//System.arraycopy(memory, vaddr, data, offset, amount);
+
+		int physicalPgNum = pageTable[pageNumber].ppn;
+
+		int address = procesador.makeAddress(pageNumber,calcoffset);
+
+		byte[] memory = procesador.getMemory();
+
+		if (address < 0 || address > memory.length)
+			return 0;
+
+		int amount = Math.min(length, memory.length-address);
+		System.arraycopy(memory,address,data,offset,amount);
 
 		return amount;
 	}
@@ -176,18 +197,41 @@ public class UserProcess {
 	 *			virtual memory.
 	 * @return	the number of bytes successfully transferred.
 	 */
-	public int writeVirtualMemory(int vaddr, byte[] data, int offset,
-								  int length) {
+	public int writeVirtualMemory(int vaddr, byte[] data, int offset, int length) {
 		Lib.assertTrue(offset >= 0 && length >= 0 && offset+length <= data.length);
 
-		byte[] memory = Machine.processor().getMemory();
+		//Funciones de machine. processor que usaremos:
+		//pagefromaddress
+		//makeaddress
+		//getmemory
+		//getOffsetfromaddress
+
+		//virtual page number asociada virtual address, offset
+
+		Processor procesador = Machine.processor();
+		int pageNumber = procesador.pageFromAddress(vaddr);
+		int calcoffset = procesador.offsetFromAddress(vaddr);
+
+		//byte[] memory = Machine.processor().getMemory();
 
 		// for now, just assume that virtual addresses equal physical addresses
-		if (vaddr < 0 || vaddr >= memory.length)
+		if (pageNumber < 0 || pageNumber >= numPages)
 			return 0;
 
-		int amount = Math.min(length, memory.length-vaddr);
-		System.arraycopy(data, offset, memory, vaddr, amount);
+		//int amount = Math.min(length, memory.length-vaddr);
+		//System.arraycopy(memory, vaddr, data, offset, amount);
+
+		int physicalPgNum = pageTable[pageNumber].ppn;
+
+		int address = procesador.makeAddress(pageNumber,calcoffset);
+
+		byte[] memory = procesador.getMemory();
+
+		if (address < 0 || address > memory.length)
+			return 0;
+
+		int amount = Math.min(length, memory.length-address);
+		System.arraycopy(data,offset,memory,address,amount);
 
 		return amount;
 	}
@@ -432,7 +476,7 @@ public class UserProcess {
 				//System.out.println("Entered if 3");
 				this.descriptorTable[i] = ThreadedKernel.fileSystem.open(currFile, true);
 				System.out.println("Archivo creado en la poscicion: "+i);
-				System.out.println(this.descriptorTable[i].getName() + " created successfully!");
+				//System.out.println(this.descriptorTable[i].getName() + " created successfully!");
 				return i;
 			}
 
