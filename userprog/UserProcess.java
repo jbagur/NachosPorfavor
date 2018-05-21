@@ -3,7 +3,7 @@ package nachos.userprog;
 import nachos.machine.*;
 import nachos.threads.*;
 import nachos.userprog.*;
-
+import java.util.*;
 import java.io.EOFException;
 
 /**
@@ -26,6 +26,7 @@ public class UserProcess {
 		this.descriptorTable = new OpenFile[16];
 		this.descriptorTable[0] = UserKernel.console.openForReading();
 		this.descriptorTable[1] = UserKernel.console.openForWriting();
+		this.Pages = new LinkedList();
 		//int numPhysPages = Machine.processor().getNumPhysPages();
 		/*pageTable = new TranslationEntry[numPhysPages];
 		for (int i=0; i<numPhysPages; i++)
@@ -130,9 +131,11 @@ public class UserProcess {
 	 *			the array.
 	 * @return	the number of bytes successfully transferred.
 	 */
-	public int readVirtualMemory(int vaddr, byte[] data, int offset,
-								 int length) {
+	public int readVirtualMemory(int vaddr, byte[] data, int offset, int length) {
 		Lib.assertTrue(offset >= 0 && length >= 0 && offset+length <= data.length);
+
+//		Procesor procesador = Machine.Processor();
+
 
 		byte[] memory = Machine.processor().getMemory();
 
@@ -316,6 +319,7 @@ public class UserProcess {
 				int vpn = section.getFirstVPN()+i;
 				TranslationEntry translationEntry = pageTable[vpn];
 				int ppn = translationEntry.ppn;
+				this.Pages.add(ppn);
 				// for now, just assume virtual addresses=physical addresses
 				section.loadPage(i, ppn);
 			}
@@ -328,6 +332,10 @@ public class UserProcess {
 	 * Release any resources allocated by <tt>loadSections()</tt>.
 	 */
 	protected void unloadSections() {
+
+		UserKernel.free(this.Pages);
+		coff.close();
+
 	}
 
 	/**
@@ -646,6 +654,8 @@ public class UserProcess {
 
 	private static final int pageSize = Processor.pageSize;
 	private static final char dbgProcess = 'a';
+
+	public static LinkedList<Integer> Pages;
 
 	private OpenFile[] descriptorTable;
 }
