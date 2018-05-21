@@ -27,6 +27,10 @@ public class UserProcess {
 		this.descriptorTable[0] = UserKernel.console.openForReading();
 		this.descriptorTable[1] = UserKernel.console.openForWriting();
 		this.Pages = new LinkedList();
+		this.hasUnlinked = new boolean[16];
+		for (int i=0; i<hasUnlinked.length; i++) {
+			hasUnlinked[i] = false;
+		}
 		//int numPhysPages = Machine.processor().getNumPhysPages();
 		/*pageTable = new TranslationEntry[numPhysPages];
 		for (int i=0; i<numPhysPages; i++)
@@ -550,12 +554,19 @@ public class UserProcess {
 		OpenFile File = this.descriptorTable[fileDescriptor];
 
 		File.close();
+		if (this.hasUnlinked[fileDescriptor] == true){
+			ThreadedKernel.fileSystem.remove(descriptorTable[fileDescriptor].getName());
+		}
+
+
 		this.descriptorTable[fileDescriptor] = null;
 
 		System.out.println("The position of the file that was closed is: "+fileDescriptor);
 		if (this.descriptorTable[fileDescriptor] == null) {
 			System.out.println("The value in that position is now null");
 		}
+
+
 
 		return 0;
 	}
@@ -570,9 +581,9 @@ public class UserProcess {
 		if(ThreadedKernel.fileSystem.open(currFile, false) != null){
 			for (int i=0; i < this.descriptorTable.length; i++) {
 				if ((this.descriptorTable[i]!= null) && (this.descriptorTable[i].getName().equals(currFile))) {
-					this.descriptorTable[i] = null;
-					System.out.println("Poscicion eliminada: "+i);
-					break;
+					this.hasUnlinked[i] = true;
+					System.out.println(descriptorTable[i].getName() + " is still open so it can't be deleted.");
+					return 0;
 				}
 			}
 			if (ThreadedKernel.fileSystem.remove(currFile)) {
@@ -582,8 +593,9 @@ public class UserProcess {
 		return -1;
 	}
 
-	private int handleExit(int address){
-		return 0;
+	private void handleExit(int address){
+		unloadSections();
+		UThread.finish();
 	}
 
 	private static final int
@@ -643,7 +655,7 @@ public class UserProcess {
 			case syscallUnlink:
 				return handleUnlink(a0);
 			case syscallExit:
-				return handleExit(a0);
+				handleExit(a0);
 
 			default:
 				Lib.debug(dbgProcess, "Unknown syscall " + syscall);
@@ -702,4 +714,6 @@ public class UserProcess {
 	public static LinkedList<Integer> Pages;
 
 	private OpenFile[] descriptorTable;
+
+	private boolean[] hasUnlinked;
 }

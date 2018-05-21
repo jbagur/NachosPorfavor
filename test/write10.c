@@ -148,7 +148,8 @@ main ()
     int fd, r, len, i;
 
     /* write a small amount of data in a few different ways */
-    file = "write1.out";
+    file = "write.out";
+    //file = "write1.out";
     char *str = "roses are red\nviolets are blue\nI love Nachos\nand so do you\n";
     len = strlen (str);
 
@@ -167,7 +168,8 @@ main ()
     /* ok, now write lots of binary data.  if you want to manually
      * confirm what was written, running "od -i ../test/binary.out"
      * will print the file and interpret the data as integers. */
-    file = "binary1.out";
+    file = "binary.out";
+    //file = "binary1.out";
     len = sizeof (bigbuf1);  /* len in units of bytes, bigbufnum in ints */
     for (i = 0; i < bigbufnum; i++) {
 	bigbuf1[i] = i;
@@ -215,7 +217,8 @@ main ()
 	exit (-4000);
     }
 
-    file = "bad1.out";
+    file = "bad.out";
+    //file = "bad1.out";
     fd = do_creat (file);
 
     /* test buffer */

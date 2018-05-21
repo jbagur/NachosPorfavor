@@ -101,14 +101,18 @@ public class UserKernel extends ThreadedKernel {
 
         UserProcess process = UserProcess.newUserProcess();
         UserProcess process2 = UserProcess.newUserProcess();
-
+        UserProcess process3 = UserProcess.newUserProcess();
+        UserProcess process4 = UserProcess.newUserProcess();
+        UserProcess process5 = UserProcess.newUserProcess();
         String shellProgram = Machine.getShellProgramName();
 
         //Lib.assertTrue(process.execute(shellProgram, new String[] { }));
 
         Lib.assertTrue(process.execute("write10.coff", new String[] { }));
         Lib.assertTrue(process2.execute("write11.coff", new String[] { }));
-
+        //Lib.assertTrue(process.execute("halt.coff", new String[] { }));
+        //Lib.assertTrue(process4.execute("write.coff", new String[] { }));
+        //Lib.assertTrue(process5.execute("read.coff", new String[] { }));
         KThread.currentThread().finish();
     }
 

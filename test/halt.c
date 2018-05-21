@@ -72,6 +72,12 @@ main()
     int openFile = open(create);
     */
     
+     //Unlink3
+    char *test = "Test2.txt";
+    int openFile = open(test);
+    int closeFile = close(openFile);
+        
+    
     halt();
     /* not reached */
 }
