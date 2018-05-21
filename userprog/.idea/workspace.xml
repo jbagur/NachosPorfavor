@@ -11,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="UserProcess.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserProcess.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UserProcess.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+            <state relative-caret-position="226">
+              <caret line="303" column="40" selection-start-line="303" selection-start-column="32" selection-end-line="303" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1297#1298#0" expanded="true" />
@@ -33,11 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserKernel.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UserKernel.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/UserKernel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="118" column="42" lean-forward="true" selection-start-line="118" selection-start-column="42" selection-end-line="118" selection-end-column="42" />
+            <state relative-caret-position="90">
+              <caret line="116" column="32" selection-start-line="116" selection-start-column="32" selection-end-line="116" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -72,7 +72,13 @@
       <find>readvirtualmemor</find>
       <find>readvirtualmemory(</find>
       <find>loadsections</find>
+      <find>handlecrea</find>
+      <find>writevirtualmemory</find>
+      <find>readvirtualmemorystring</find>
+      <find>loadse</find>
+      <find>readvirtual</find>
       <find>avlp</find>
+      <find>allocate</find>
     </findStrings>
     <replaceStrings>
       <replace>AVLP</replace>
@@ -81,8 +87,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/UserKernel.java" />
         <option value="$PROJECT_DIR$/UserProcess.java" />
+        <option value="$PROJECT_DIR$/UserKernel.java" />
       </list>
     </option>
   </component>
@@ -197,16 +203,15 @@
       <workItem from="1526664644475" duration="20462000" />
       <workItem from="1526766734524" duration="10525000" />
       <workItem from="1526790155113" duration="367000" />
-      <workItem from="1526837835973" duration="25311000" />
+      <workItem from="1526837835973" duration="29880000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56665000" />
+    <option name="totallyTimeSpent" value="61234000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="101" y="-5" width="1819" height="940" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -290,20 +295,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/UserKernel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="118" column="42" lean-forward="true" selection-start-line="118" selection-start-column="42" selection-end-line="118" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/UserProcess.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="226">
+          <caret line="303" column="40" selection-start-line="303" selection-start-column="32" selection-end-line="303" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1297#1298#0" expanded="true" />
@@ -316,6 +311,16 @@
             <element signature="e#5248#5249#0" expanded="true" />
             <element signature="e#15564#15565#0" expanded="true" />
             <element signature="e#15579#15580#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserKernel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="116" column="32" selection-start-line="116" selection-start-column="32" selection-end-line="116" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

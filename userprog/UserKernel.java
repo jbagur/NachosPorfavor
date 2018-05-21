@@ -100,16 +100,21 @@ public class UserKernel extends ThreadedKernel {
         super.run();
 
         UserProcess process = UserProcess.newUserProcess();
+     //   UserProcess process2 = UserProcess.newUserProcess();
 
         String shellProgram = Machine.getShellProgramName();
-        Lib.assertTrue(process.execute(shellProgram, new String[] { }));
+
+        //Lib.assertTrue(process.execute(shellProgram, new String[] { }));
+
+        Lib.assertTrue(process.execute("write10.coff", new String[] { }));
+    //    Lib.assertTrue(process2.execute("write11.coff", new String[] { }));
 
         KThread.currentThread().finish();
     }
 
     public static int allocate(){
         pageLock.acquire();
-        int a = freeTable.removeFirst();
+        int a = freeTable.remove();
         pageLock.release();
         return a;
     }
@@ -117,7 +122,7 @@ public class UserKernel extends ThreadedKernel {
     public static void free(LinkedList<Integer> AVLP){
         pageLock.acquire();
         for (int i = 0;i < AVLP.size(); i++) {
-            int a = AVLP.removeFirst();
+            int a = AVLP.remove(i);
             freeTable.add(a);
         }
         pageLock.release();
