@@ -11,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="UserProcess.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UserProcess.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/UserProcess.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="564" lean-forward="true" selection-start-line="564" selection-end-line="564" />
+            <state relative-caret-position="534">
+              <caret line="320" column="39" selection-start-line="320" selection-start-column="39" selection-end-line="320" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1297#1298#0" expanded="true" />
@@ -33,11 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserKernel.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserKernel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UserKernel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+            <state>
+              <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -68,8 +68,8 @@
       <find>userkernel</find>
       <find>loadsection</find>
       <find>loadPage</find>
-      <find>avlp</find>
       <find>stack</find>
+      <find>avlp</find>
     </findStrings>
     <replaceStrings>
       <replace>AVLP</replace>
@@ -78,8 +78,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/UserProcess.java" />
         <option value="$PROJECT_DIR$/UserKernel.java" />
+        <option value="$PROJECT_DIR$/UserProcess.java" />
       </list>
     </option>
   </component>
@@ -194,12 +194,12 @@
       <workItem from="1526664644475" duration="20462000" />
       <workItem from="1526766734524" duration="10525000" />
       <workItem from="1526790155113" duration="367000" />
-      <workItem from="1526837835973" duration="18879000" />
+      <workItem from="1526837835973" duration="21743000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50233000" />
+    <option name="totallyTimeSpent" value="53097000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="101" y="-5" width="1819" height="940" extended-state="6" />
@@ -287,10 +287,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/UserKernel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/UserProcess.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="564" lean-forward="true" selection-start-line="564" selection-end-line="564" />
+        <state relative-caret-position="534">
+          <caret line="320" column="39" selection-start-line="320" selection-start-column="39" selection-end-line="320" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1297#1298#0" expanded="true" />
@@ -303,16 +313,6 @@
             <element signature="e#5248#5249#0" expanded="true" />
             <element signature="e#15564#15565#0" expanded="true" />
             <element signature="e#15579#15580#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/UserKernel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -299,7 +299,7 @@ public class UserProcess {
 		for(int i=0;i<numPages;i++){
 
 			int ppn =UserKernel.allocate();
-
+//mapar la page table
 			pageTable[i] = new TranslationEntry(i,ppn,true,false,false,false);
 			System.out.println("la pagina virtual: "+i+" fue asignada a la pagina fisica: "+ppn);
 
@@ -314,9 +314,10 @@ public class UserProcess {
 
 			for (int i=0; i<section.getLength(); i++) {
 				int vpn = section.getFirstVPN()+i;
-
+				TranslationEntry translationEntry = pageTable[vpn];
+				int ppn = translationEntry.ppn;
 				// for now, just assume virtual addresses=physical addresses
-				section.loadPage(i, vpn);
+				section.loadPage(i, ppn);
 			}
 		}
 
