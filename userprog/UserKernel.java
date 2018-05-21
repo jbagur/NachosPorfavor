@@ -24,9 +24,12 @@ public class UserKernel extends ThreadedKernel {
         super.initialize(args);
 
         console = new SynchConsole(Machine.console());
-        AVLP = new Stack();
-        freeTable = new Stack();
+        AVLP = new LinkedList();
+        freeTable = new LinkedList();
         pageLock =  new Lock();
+        for (int i = 0;i < 64;i++){
+            freeTable.add(i);
+        }
         Machine.processor().setExceptionHandler(new Runnable() {
             public void run() { exceptionHandler(); }
         });
@@ -104,11 +107,18 @@ public class UserKernel extends ThreadedKernel {
         KThread.currentThread().finish();
     }
 
-    public static void free(Stack<Integer> AVLP){
+    public static int allocate(){
+        pageLock.acquire();
+        int a = freeTable.removeFirst();
+        pageLock.release();
+        return a;
+    }
+
+    public static void free(LinkedList<Integer> AVLP){
         pageLock.acquire();
         for (int i = 0;i < AVLP.size(); i++) {
-            int a = AVLP.pop();
-            freeTable.push(a);
+            int a = AVLP.removeFirst();
+            freeTable.add(a);
         }
         pageLock.release();
     }
@@ -128,9 +138,9 @@ public class UserKernel extends ThreadedKernel {
     private static Coff dummy1 = null;
 
 //Page table de los procesos
-    public static Stack<Integer> AVLP;
+    public static LinkedList<Integer> AVLP;
 //no tomados
-    public static Stack<Integer> freeTable;
+    public static LinkedList<Integer> freeTable;
 
     public static Lock pageLock;
 }

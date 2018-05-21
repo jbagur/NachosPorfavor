@@ -26,10 +26,10 @@ public class UserProcess {
 		this.descriptorTable = new OpenFile[16];
 		this.descriptorTable[0] = UserKernel.console.openForReading();
 		this.descriptorTable[1] = UserKernel.console.openForWriting();
-		int numPhysPages = Machine.processor().getNumPhysPages();
-		pageTable = new TranslationEntry[numPhysPages];
+		//int numPhysPages = Machine.processor().getNumPhysPages();
+		/*pageTable = new TranslationEntry[numPhysPages];
 		for (int i=0; i<numPhysPages; i++)
-			pageTable[i] = new TranslationEntry(i,i, true,false,false,false);
+			pageTable[i] = new TranslationEntry(i,i, true,false,false,false);*/
 	}
 
 	/**
@@ -291,6 +291,18 @@ public class UserProcess {
 			coff.close();
 			Lib.debug(dbgProcess, "\tinsufficient physical memory");
 			return false;
+		}
+
+		pageTable = new TranslationEntry[numPages];
+
+
+		for(int i=0;i<numPages;i++){
+
+			int ppn =UserKernel.allocate();
+
+			pageTable[i] = new TranslationEntry(i,ppn,true,false,false,false);
+			System.out.println("la pagina virtual: "+i+" fue asignada a la pagina fisica: "+ppn);
+
 		}
 
 		// load sections
