@@ -153,20 +153,21 @@ public class UserProcess {
 		//byte[] memory = Machine.processor().getMemory();
 
 		// for now, just assume that virtual addresses equal physical addresses
-		if (pageNumber < 0 || pageNumber >= numPages)
+		if (pageNumber < 0 || pageNumber > (numPages-1))
 			return 0;
 
 		//int amount = Math.min(length, memory.length-vaddr);
 		//System.arraycopy(memory, vaddr, data, offset, amount);
 
 		int physicalPgNum = pageTable[pageNumber].ppn;
+		pageTable[pageNumber].used = true;
 
-		int address = procesador.makeAddress(pageNumber,calcoffset);
+		if (physicalPgNum < 0 || physicalPgNum >= procesador.getNumPhysPages())
+			return 0;
 
 		byte[] memory = procesador.getMemory();
+		int address = procesador.makeAddress(physicalPgNum,calcoffset);
 
-		if (address < 0 || address > memory.length)
-			return 0;
 
 		int amount = Math.min(length, memory.length-address);
 		System.arraycopy(memory,address,data,offset,amount);
@@ -219,20 +220,26 @@ public class UserProcess {
 		//byte[] memory = Machine.processor().getMemory();
 
 		// for now, just assume that virtual addresses equal physical addresses
-		if (pageNumber < 0 || pageNumber >= numPages)
+		if (pageNumber < 0 || pageNumber > (numPages-1))
 			return 0;
 
 		//int amount = Math.min(length, memory.length-vaddr);
 		//System.arraycopy(memory, vaddr, data, offset, amount);
 
 		int physicalPgNum = pageTable[pageNumber].ppn;
+		pageTable[pageNumber].used = true;
+		pageTable[pageNumber].dirty = true;
+		if (pageTable[pageNumber].readOnly) {
+			return 0;
+		}
 
-		int address = procesador.makeAddress(pageNumber,calcoffset);
+
+		if (physicalPgNum < 0 || physicalPgNum >= procesador.getNumPhysPages())
+			return 0;
+
+		int address = procesador.makeAddress(physicalPgNum,calcoffset);
 
 		byte[] memory = procesador.getMemory();
-
-		if (address < 0 || address > memory.length)
-			return 0;
 
 		int amount = Math.min(length, memory.length-address);
 		System.arraycopy(data,offset,memory,address,amount);
@@ -365,6 +372,7 @@ public class UserProcess {
 			for (int i=0; i<section.getLength(); i++) {
 				int vpn = section.getFirstVPN()+i;
 				TranslationEntry translationEntry = pageTable[vpn];
+				translationEntry.readOnly = section.isReadOnly();
 				int ppn = translationEntry.ppn;
 				// for now, just assume virtual addresses=physical addresses
 				section.loadPage(i, ppn);
@@ -410,6 +418,7 @@ public class UserProcess {
 	/**
 	 * Handle the halt() system call.
 	 */
+
 	private int handleHalt() {
 
 		Machine.halt();
@@ -420,10 +429,9 @@ public class UserProcess {
 
 
 	private int handleOpen(int address){
-
 		System.out.println("Function Handle Open");
 		String currFile = readVirtualMemoryString(address, 256);
-		System.out.println("--------~~~~~~~~" + currFile);
+		System.out.println(currFile);
 
 		if(currFile == null || currFile.length() <= 0){
 			//System.out.println("Entered if 1");
@@ -478,7 +486,7 @@ public class UserProcess {
 				//System.out.println("Entered if 3");
 				this.descriptorTable[i] = ThreadedKernel.fileSystem.open(currFile, true);
 				System.out.println("Archivo creado en la poscicion: "+i);
-				//System.out.println(this.descriptorTable[i].getName() + " created successfully!");
+//				System.out.println(this.descriptorTable[i].getName() + " created successfully!");
 				return i;
 			}
 
@@ -594,7 +602,7 @@ public class UserProcess {
 	private void handleExit(int address){
 		System.out.println("-----------Test handleExit-----------");
 		unloadSections();
-
+		UThread.finish();
 		System.out.println("-----------/Test handleExit-----------");
 	}
 
