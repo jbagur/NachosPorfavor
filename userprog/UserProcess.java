@@ -564,6 +564,9 @@ public class UserProcess {
 			ThreadedKernel.fileSystem.remove(descriptorTable[fileDescriptor].getName());
 			this.hasUnlinked[fileDescriptor] = false;
 		}
+
+        this.descriptorTable[fileDescriptor] = null;
+
 		System.out.println("The position of the file that was closed is: "+fileDescriptor);
 		if (this.descriptorTable[fileDescriptor] == null) {
 			System.out.println("The value in that position is now null");
