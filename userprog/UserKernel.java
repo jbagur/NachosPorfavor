@@ -106,8 +106,8 @@ public class UserKernel extends ThreadedKernel {
         //Lib.assertTrue(process.execute(shellProgram, new String[] { }));
 
 
-        Lib.assertTrue(process.execute("write.coff", new String[] { }));
-        Lib.assertTrue(process2.execute("read.coff", new String[] { }));
+        Lib.assertTrue(process.execute("read.coff", new String[] { }));
+        Lib.assertTrue(process2.execute("write.coff", new String[] { }));
 
         //Lib.assertTrue(process.execute("write10.coff", new String[] { }));
         //Lib.assertTrue(process2.execute("write10.coff", new String[] { }));
