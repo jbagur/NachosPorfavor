@@ -345,12 +345,11 @@ public class UserProcess {
 		}
 
 		pageTable = new TranslationEntry[numPages];
-
-
 		for(int i=0;i<numPages;i++){
 
 			int ppn =UserKernel.allocate();
 //mapar la page table
+			this.Pages.add(ppn);
 			pageTable[i] = new TranslationEntry(i,ppn,true,false,false,false);
 			System.out.println("la pagina virtual: "+i+" fue asignada a la pagina fisica: "+ppn);
 
@@ -367,7 +366,6 @@ public class UserProcess {
 				int vpn = section.getFirstVPN()+i;
 				TranslationEntry translationEntry = pageTable[vpn];
 				int ppn = translationEntry.ppn;
-				this.Pages.add(ppn);
 				// for now, just assume virtual addresses=physical addresses
 				section.loadPage(i, ppn);
 			}
@@ -423,9 +421,9 @@ public class UserProcess {
 
 	private int handleOpen(int address){
 
-		//System.out.println("Function Handle Open")
+		System.out.println("Function Handle Open");
 		String currFile = readVirtualMemoryString(address, 256);
-		//System.out.println(currFile);
+		System.out.println("--------~~~~~~~~" + currFile);
 
 		if(currFile == null || currFile.length() <= 0){
 			//System.out.println("Entered if 1");
@@ -453,7 +451,7 @@ public class UserProcess {
 
 		}
 
-		System.out.println("No se encontro el archivo");
+		System.out.println("No se encontro el archivo " +currFile);
 		return -1;
 	}
 
@@ -594,8 +592,10 @@ public class UserProcess {
 	}
 
 	private void handleExit(int address){
+		System.out.println("-----------Test handleExit-----------");
 		unloadSections();
-		UThread.finish();
+
+		System.out.println("-----------/Test handleExit-----------");
 	}
 
 	private static final int
@@ -642,6 +642,8 @@ public class UserProcess {
 		switch (syscall) {
 			case syscallHalt:
 				return handleHalt();
+			case syscallExit:
+				handleExit(a0);
 			case syscallOpen:
 				return handleOpen(a0);
 			case syscallCreate:
@@ -654,8 +656,6 @@ public class UserProcess {
 				return handleClose(a0);
 			case syscallUnlink:
 				return handleUnlink(a0);
-			case syscallExit:
-				handleExit(a0);
 
 			default:
 				Lib.debug(dbgProcess, "Unknown syscall " + syscall);
@@ -711,7 +711,7 @@ public class UserProcess {
 	private static final int pageSize = Processor.pageSize;
 	private static final char dbgProcess = 'a';
 
-	public static LinkedList<Integer> Pages;
+	public  LinkedList<Integer> Pages;
 
 	private OpenFile[] descriptorTable;
 

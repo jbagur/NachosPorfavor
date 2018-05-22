@@ -16,14 +16,12 @@
 #define	syscallExit		1
 #define	syscallExec		2
 #define	syscallJoin		3
-//de aqui
 #define	syscallCreate		4
 #define	syscallOpen		5
 #define	syscallRead		6
 #define	syscallWrite		7
 #define	syscallClose		8
 #define	syscallUnlink		9
-//hasta aqui
 #define syscallMmap		10
 #define syscallConnect		11
 #define syscallAccept		12
