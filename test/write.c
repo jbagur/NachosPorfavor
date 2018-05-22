@@ -1,10 +1,12 @@
 #include "syscall.h"
-void main() {
+#include "stdio.h"
 
-    char *test = "Test1.txt";
-    char *escribir = "Wicho, Hit es tu papi";
-    void *buffer[1];
-    int openFile = open(test);
-    int writeFile = write(openFile, escribir, strlen(escribir));
+void main()
+{
+	char *create = "TestOS.txt";
+	int createFile = creat(create);
+    	char *escribir = "O.S.45";
+    	void *buffer[1];
+    	int writeFile = write(createFile, escribir, strlen(escribir));
+    	int closeFile = close(createFile);    
 }
-

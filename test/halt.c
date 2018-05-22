@@ -59,10 +59,11 @@ main()
     printf("Contenido: %s\n",buffer);
     */
 
-     //Unlink
+    /* //Unlink
     char *test = "Test4.txt";
     int deleteFile = unlink(test);
     int openFile = open(test);
+    */
     
 
     /* //Unlink2
